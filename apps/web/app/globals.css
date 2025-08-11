@@ -1,0 +1,16 @@
+:root{
+  --bg: #000000;
+  --fg: #FFFFFF;
+  --primary: #28E7C5;
+  --accent: #6843E1;
+}
+html, body { background: var(--bg); color: var(--fg); }
+a { color: var(--primary); text-decoration: none; }
+button {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #000; border: none; padding: 10px 16px; border-radius: 10px;
+}
+.card { background: #0b0b0b; border: 1px solid #1a1a1a; border-radius: 16px; padding: 16px; box-shadow: 0 10px 30px rgba(40,231,197,0.08); }
+.chip { display:inline-block; padding:4px 10px; border-radius:999px; background:#101010; border:1px solid #222; color:#c6c6c6; }
+.progress { height: 8px; background:#1a1a1a; border-radius:999px; overflow:hidden; }
+.progress > span { display:block; height:100%; background: linear-gradient(90deg, var(--primary), var(--accent)); }

@@ -1,0 +1,82 @@
+# Node / Monorepo
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+build/
+**/build/
+
+# TypeScript
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Next.js
+.next/
+**/.next/
+out/
+**/out/
+.vercel/
+**/.vercel/
+.netlify/
+**/.netlify/
+
+# Logs
+logs
+**/logs
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Testing / Coverage
+coverage/
+**/coverage/
+.nyc_output/
+**/.nyc_output/
+
+# Env files (keep examples)
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+
+# Temporary / Caches
+tmp/
+**/tmp/
+.tmp/
+**/.tmp/
+.cache/
+**/.cache/
+
+# Prisma (generated engines live under node_modules/.prisma)
+.prisma/
+**/.prisma/
+
+# Docker local data (if any)
+docker-data/
+**/docker-data/
+
+# OS / Editor
+.DS_Store
+**/.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+
+# Keys / Certificates (never commit secrets)
+*.pem
+*.key
+*.crt
+*.p12
+
+# Turborepo (if used)
+.turbo/
+**/.turbo/
+

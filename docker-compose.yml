@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:15
+    container_name: compliance_db
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: compliance
+    ports:
+      - "5436:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d compliance"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: compliance_mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+volumes:
+  db_data: {}

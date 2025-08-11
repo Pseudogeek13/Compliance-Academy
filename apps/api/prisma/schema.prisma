@@ -1,0 +1,170 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  role       Role
+  managerId  String?  @map("manager_id")
+  manager    User?    @relation("UserManager", fields: [managerId], references: [id])
+  reports    User[]   @relation("UserManager")
+  deptId     String?  @map("dept_id")
+  location   String?
+  status     String   @default("active")
+  enrollments Enrollment[]
+  auditLogs  AuditLog[] @relation("AuditActor")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+}
+
+enum Role {
+  LEARNER
+  MANAGER
+  CONTENT_ADMIN
+  SYSTEM_ADMIN
+}
+
+model Course {
+  id            String    @id @default(cuid())
+  title         String
+  version       String
+  status        CourseStatus @default(DRAFT)
+  required      Boolean   @default(true)
+  validityDays  Int?      @map("validity_days")
+  timeToCompleteMinutes Int? @map("time_to_complete_minutes")
+  creditHours   Float?
+  lessons       Lesson[]
+  questions     Question[]
+  assignments   Assignment[]
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  @@unique([title, version], name: "title_version_unique")
+}
+
+enum CourseStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+}
+
+model Lesson {
+  id        String  @id @default(cuid())
+  courseId  String  @map("course_id")
+  course    Course  @relation(fields: [courseId], references: [id])
+  order     Int
+  content   Json    @map("content_blob")
+  mediaRefs Json?   @map("media_refs")
+}
+
+model Question {
+  id         String   @id @default(cuid())
+  courseId   String   @map("course_id")
+  course     Course   @relation(fields: [courseId], references: [id])
+  body       String
+  type       QuestionType
+  answers    Json
+  correctKey Json     @map("correct_key")
+  tags       String[]
+  version    String
+
+  attemptItems AttemptItem[]
+}
+
+enum QuestionType {
+  MCQ_SINGLE
+  MCQ_MULTI
+  TRUE_FALSE
+  SHORT_ANSWER
+  SCENARIO
+}
+
+model Assignment {
+  id              String   @id @default(cuid())
+  courseId        String   @map("course_id")
+  course          Course   @relation(fields: [courseId], references: [id])
+  version         String
+  audienceFilter  Json     @map("audience_filter")
+  dueAt           DateTime @map("due_at")
+  recurrence      String?
+  enrollments     Enrollment[]
+  createdAt       DateTime  @default(now()) @map("created_at")
+}
+
+model Enrollment {
+  id            String     @id @default(cuid())
+  userId        String     @map("user_id")
+  user          User       @relation(fields: [userId], references: [id])
+  assignmentId  String     @map("assignment_id")
+  assignment    Assignment @relation(fields: [assignmentId], references: [id])
+  status        EnrollmentStatus @default(NOT_STARTED)
+  startedAt     DateTime?  @map("started_at")
+  dueAt         DateTime?  @map("due_at")
+  completedAt   DateTime?  @map("completed_at")
+  attempts      Attempt[]
+
+  certificate   Certificate?
+
+  currentLessonIndex Int? @default(0) @map("current_lesson_index")
+}
+
+enum EnrollmentStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  OVERDUE
+}
+
+model Attempt {
+  id           String    @id @default(cuid())
+  enrollmentId String    @map("enrollment_id")
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  startedAt    DateTime  @default(now()) @map("started_at")
+  finishedAt   DateTime? @map("finished_at")
+  score        Int?
+  passed       Boolean?  
+  ip           String?
+  userAgent    String?   @map("user_agent")
+  items        AttemptItem[]
+}
+
+model AttemptItem {
+  id         String  @id @default(cuid())
+  attemptId  String  @map("attempt_id")
+  attempt    Attempt @relation(fields: [attemptId], references: [id])
+  questionId String  @map("question_id")
+  question   Question @relation(fields: [questionId], references: [id])
+  selected   Json
+  correct    Boolean
+  answerOrder Json?   @map("answer_order")
+  correctIndex Int?   @map("correct_index")
+  selectedIndex Int?  @map("selected_index")
+}
+
+model Certificate {
+  id           String   @id @default(cuid())
+  enrollmentId String   @unique @map("enrollment_id")
+  enrollment   Enrollment @relation(fields: [enrollmentId], references: [id])
+  serial       String   @unique
+  issuedAt     DateTime @default(now()) @map("issued_at")
+  expiresAt    DateTime? @map("expires_at")
+  signatureHash String  @map("signature_hash")
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?  @map("actor_id")
+  actor      User?    @relation("AuditActor", fields: [actorId], references: [id])
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id")
+  timestamp  DateTime @default(now())
+  metadata   Json
+}
