@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light" />
+<title>Brazil SPSAV Authorization & Transition 2026</title>
+<link rel="stylesheet" href="app.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="header-wrap">
+    <div>
+      <div class="eyebrow">Brazil · SPSAV regulatory programme</div>
+      <h1>Authorization & Transition 2026</h1>
+      <div class="subtitle" id="subtitle">Kinetic Serviços Digitais Ltda · Rules Holdings BVI Ltd / Bumba</div>
+    </div>
+    <div>
+      <div class="header-actions">
+        <button class="btn btn-secondary" id="refreshBtn">↻ Refresh shared data</button>
+        <button class="btn btn-secondary" id="exportBtn">↓ Export</button>
+        <button class="btn btn-primary" id="publishBtn">↑ Publish changes</button>
+      </div>
+      <span class="sync-state" id="syncState">Loading shared project…</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="alert"><strong>Programme logic:</strong> 30 October 2026 is treated as the transition / Phase 1 survival gate. Phase 2 is prepared in parallel so the team is not trying to build governance, business-plan and independent-assurance evidence after BCB starts the next filing clock.</div>
+  <div class="alert info" id="publicNotice"></div>
+  <div class="alert dirty" id="dirtyBanner"><strong>Unsynced changes:</strong> this browser contains edits that have not yet been published to the shared GitHub data file.</div>
+
+  <section class="kpis" id="kpis"></section>
+
+  <div class="section-title"><h2>Workstream health</h2><span class="small">Click a workstream to filter the task register</span></div>
+  <section class="workstreams" id="workstreams"></section>
+
+  <section class="toolbar">
+    <div class="presets" id="presets">
+      <button class="chip active" data-preset="all">All requirements</button>
+      <button class="chip" data-preset="critical">Critical path</button>
+      <button class="chip" data-preset="phase1">Before filing</button>
+      <button class="chip" data-preset="reporting">Starts on filing</button>
+      <button class="chip" data-preset="phase2">Phase 2 readiness</button>
+      <button class="chip" data-preset="2027">1 Jan 2027</button>
+    </div>
+    <div class="filters">
+      <input class="control" id="search" placeholder="Search requirement, regulation, owner, evidence…" />
+      <select class="control" id="statusFilter"><option value="">All statuses</option></select>
+      <select class="control" id="workstreamFilter"><option value="">All workstreams</option></select>
+      <select class="control" id="priorityFilter"><option value="">All priorities</option><option>Critical</option><option>High</option></select>
+    </div>
+  </section>
+
+  <div class="section-title"><h2 id="registerTitle">Requirement register</h2><span class="small" id="resultCount"></span></div>
+  <div class="table-head"><div>Requirement</div><div>Status</div><div class="hide-tablet">Accountable lead</div><div>Target</div></div>
+  <section class="task-list" id="tasks"></section>
+
+  <footer class="footer">
+    <strong>Control note.</strong> This is a project-management implementation aid, not a substitute for Brazilian legal advice. Regulatory source links point to the official BCB texts where available. The public repository should contain project status and non-sensitive evidence descriptions only. Customer information, credentials, privileged legal advice, security secrets and underlying confidential evidence should stay in controlled repositories.
+  </footer>
+</main>
+
+<dialog class="dialog" id="syncDialog">
+  <div class="dialog-body">
+    <h2>Publish to the shared project</h2>
+    <p>Editors use their own GitHub fine-grained personal access token with <strong>Contents: Read and write</strong> permission for <strong>Pseudogeek13/Compliance-Academy</strong>. The token is kept only in this browser tab/session and is sent directly to GitHub's API. It is never written into the project file.</p>
+    <label class="cell-label">Editor name</label>
+    <input class="control" id="editorName" placeholder="e.g. Thomas / Brazil Compliance" />
+    <div style="height:9px"></div>
+    <label class="cell-label">GitHub token</label>
+    <input class="control" id="token" type="password" autocomplete="off" placeholder="github_pat_…" />
+    <p style="font-size:11px">If a teammate has published since your last refresh, the dashboard will refuse to overwrite their change. Refresh, reconcile your edits, then publish again.</p>
+    <div class="dialog-actions">
+      <button class="btn btn-light" id="cancelSync">Cancel</button>
+      <button class="btn btn-green" id="confirmSync">Publish shared changes</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
