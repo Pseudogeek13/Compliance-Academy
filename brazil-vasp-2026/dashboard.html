@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light" />
+<title>Brazil SPSAV Authorization & Transition 2026</title>
+<link rel="stylesheet" href="https://raw.githack.com/Pseudogeek13/Compliance-Academy/aabd2bae7fad92f5ac33c2e34ed53186698f4815/brazil-vasp-2026/app.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="header-wrap">
+    <div>
+      <div class="eyebrow">Brazil · SPSAV regulatory programme</div>
+      <h1>Authorization & Transition 2026</h1>
+      <div class="subtitle" id="subtitle">Kinetic Serviços Digitais Ltda · Rules Holdings BVI Ltd / Bumba</div>
+    </div>
+    <div class="header-side">
+      <div class="header-actions">
+        <button class="btn btn-secondary" id="refreshBtn">↻ Refresh</button>
+        <button class="btn btn-secondary" id="exportBtn">↓ Export</button>
+        <button class="btn btn-primary" id="publishBtn">↑ Publish changes</button>
+      </div>
+      <span class="sync-state" id="syncState">Loading shared project…</span>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="deadline-strip">
+    <div><strong>Immediate objective:</strong> submit the transition / Phase 1 package by <strong>27 October 2026</strong>, leaving a three-day buffer before the statutory 30 October deadline.</div>
+    <div class="deadline-days"><span id="daysLeft">—</span><small>days to statutory deadline</small></div>
+  </div>
+  <div class="alert info" id="publicNotice"></div>
+  <div class="alert dirty" id="dirtyBanner"><strong>Unsynced changes:</strong> this browser contains edits not yet published to the shared project.</div>
+
+  <nav class="phase-tabs" aria-label="Programme phases">
+    <button class="phase-tab active" data-view="phase1">Phase 1 · Before filing</button>
+    <button class="phase-tab" data-view="reporting">After filing / reporting</button>
+    <button class="phase-tab" data-view="phase2">Phase 2 authorization</button>
+    <button class="phase-tab" data-view="2027">1 Jan 2027 controls</button>
+    <button class="phase-tab" data-view="all">All items</button>
+  </nav>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section id="phase1Guide" class="phase1-guide">
+    <div class="guide-title">
+      <h2>Phase 1 in six steps</h2>
+      <p>This is the working sequence. The table underneath contains the actual requirements and owners.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span>1</span><div><strong>Confirm scope & eligibility</strong><small>What Kinetic does, which SPSAV modality applies, and evidence it was operating on 2 Feb 2026.</small></div></div>
+      <div class="step"><span>2</span><div><strong>Fix company, directors & capital</strong><small>Corporate object/name, management responsibilities, office and final capital calculation/funding.</small></div></div>
+      <div class="step"><span>3</span><div><strong>Put required controls in place</strong><small>AML, sanctions, risk, cybersecurity, fraud and internal-control framework.</small></div></div>
+      <div class="step"><span>4</span><div><strong>Lock custody & outsourcing</strong><small>Rules BVI custody model, segregation, legal representative/guarantee and outsourced-service governance.</small></div></div>
+      <div class="step"><span>5</span><div><strong>Make reporting operational</strong><small>COSIF, BCB access, CCS and 5710/5711 readiness before the application goes in.</small></div></div>
+      <div class="step"><span>6</span><div><strong>QA and file</strong><small>Complete Sisorf pack, controller documents, counsel QA, board approval and submit by 27 Oct.</small></div></div>
+    </div>
+  </section>
+
+  <section class="toolbar">
+    <div class="toolbar-left">
+      <input class="control search" id="search" placeholder="Search requirement, owner, regulation or evidence…" />
+      <select class="control" id="statusFilter"><option value="">All statuses</option></select>
+      <select class="control" id="priorityFilter"><option value="">All priorities</option><option>Critical</option><option>High</option></select>
+      <label class="toggle"><input type="checkbox" id="openOnly" /> Open items only</label>
+    </div>
+    <div class="result-count" id="resultCount"></div>
+  </section>
+
+  <section class="register-wrap">
+    <table class="register" id="register">
+      <thead>
+        <tr>
+          <th class="col-requirement">Requirement</th>
+          <th class="col-actions">What needs to be done</th>
+          <th class="col-people">Who is involved</th>
+          <th class="col-due">Due</th>
+          <th class="col-status">Status</th>
+          <th class="col-evidence">Evidence / completion</th>
+        </tr>
+      </thead>
+      <tbody id="taskRows"></tbody>
+    </table>
+    <div class="empty" id="emptyState" hidden>No requirements match the current filters.</div>
+  </section>
+
+  <footer class="footer">
+    <strong>Control note.</strong> This is a project-management implementation aid, not a substitute for Brazilian legal advice. Keep confidential evidence, customer information, credentials, privileged advice and security-sensitive material in controlled repositories rather than this public project.
+  </footer>
+</main>
+
+<dialog class="dialog" id="syncDialog">
+  <div class="dialog-body">
+    <h2>Publish shared changes</h2>
+    <p>Editors use their own GitHub fine-grained token with <strong>Contents: Read and write</strong> permission for <strong>Pseudogeek13/Compliance-Academy</strong>. The token remains in this browser session and is never stored in the project.</p>
+    <label class="cell-label">Editor name</label>
+    <input class="control" id="editorName" placeholder="e.g. Thomas / Brazil Compliance" />
+    <div class="spacer"></div>
+    <label class="cell-label">GitHub token</label>
+    <input class="control" id="token" type="password" autocomplete="off" placeholder="github_pat_…" />
+    <p class="dialog-note">If somebody has published since your last refresh, publishing is blocked until you refresh. That is intentional. Accidental overwrites are not a collaboration feature.</p>
+    <div class="dialog-actions">
+      <button class="btn btn-light" id="cancelSync">Cancel</button>
+      <button class="btn btn-green" id="confirmSync">Publish shared changes</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="https://raw.githack.com/Pseudogeek13/Compliance-Academy/aabd2bae7fad92f5ac33c2e34ed53186698f4815/brazil-vasp-2026/app.js"></script>
+</body>
+</html>
